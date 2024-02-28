@@ -2,15 +2,16 @@ import { Tldraw, track, useEditor } from '@tldraw/tldraw'
 import '@tldraw/tldraw/tldraw.css'
 import { useYjsStore } from './useYjsStore'
 
-const HOST_URL =
-	import.meta.env.MODE === 'development'
-		? 'ws://localhost:1234'
-		: 'wss://demos.yjs.dev'
+const sweetClientToken = {
+	url: 'wss://sweet-staging.learnmer.dev/doc/ws',
+	docId: 'uXynWOmGwf6qie0eVB67y',
+	token:
+		'ARV1WHluV09tR3dmNnFpZTBlVkI2N3kB_f9Eku2NAQAAINNkJ5lwjZ3_atXylEPtBjfC4le9glyLkCDHT_xm3DoY',
+}
 
 export default function YjsExample() {
 	const store = useYjsStore({
-		roomId: 'example17',
-		hostUrl: HOST_URL,
+		clientToken: sweetClientToken,
 	})
 
 	return (

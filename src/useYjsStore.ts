@@ -14,23 +14,20 @@ import {
 	react,
 	transact,
 } from '@tldraw/tldraw'
+import { createYjsProvider } from '@y-sweet/react'
+import { ClientToken } from '@y-sweet/sdk'
 import { useEffect, useMemo, useState } from 'react'
 import { YKeyValue } from 'y-utility/y-keyvalue'
-import { WebsocketProvider } from 'y-websocket'
 import * as Y from 'yjs'
 
 export function useYjsStore({
-	roomId = 'example',
-	hostUrl = import.meta.env.MODE === 'development'
-		? 'ws://localhost:1234'
-		: 'wss://demos.yjs.dev',
+	clientToken,
 	shapeUtils = [],
 }: Partial<{
-	hostUrl: string
-	roomId: string
-	version: number
 	shapeUtils: TLAnyShapeUtilConstructor[]
-}>) {
+}> & {
+	clientToken: ClientToken
+}) {
 	const [store] = useState(() => {
 		const store = createTLStore({
 			shapeUtils: [...defaultShapeUtils, ...shapeUtils],
@@ -52,15 +49,17 @@ export function useYjsStore({
 
 	const { yDoc, yStore, room } = useMemo(() => {
 		const yDoc = new Y.Doc({ gc: true })
-		const yArr = yDoc.getArray<{ key: string; val: TLRecord }>(`tl_${roomId}`)
+		const yArr = yDoc.getArray<{ key: string; val: TLRecord }>(
+			`tl_${clientToken?.docId ?? 'unknown'}`,
+		)
 		const yStore = new YKeyValue(yArr)
 
 		return {
 			yDoc,
 			yStore,
-			room: new WebsocketProvider(hostUrl, roomId, yDoc, { connect: true }),
+			room: createYjsProvider(yDoc, clientToken, { connect: true }),
 		}
-	}, [hostUrl, roomId])
+	}, [clientToken])
 
 	useEffect(() => {
 		setStoreWithStatus({ status: 'loading' })
