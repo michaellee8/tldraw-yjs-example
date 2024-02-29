@@ -3,7 +3,7 @@ import '@tldraw/tldraw/tldraw.css'
 import { useYjsStore } from './useYjsStore'
 
 const sweetClientToken = {
-	url: 'wss://sweet-staging.learnmer.dev/doc/ws',
+	url: 'wss://learnmer-y-sweet-server-worker-staging.learnmer.workers.dev/doc/ws',
 	docId: 'uXynWOmGwf6qie0eVB67y',
 	token:
 		'ARV1WHluV09tR3dmNnFpZTBlVkI2N3kB_f9Eku2NAQAAINNkJ5lwjZ3_atXylEPtBjfC4le9glyLkCDHT_xm3DoY',
